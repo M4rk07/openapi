@@ -4,7 +4,7 @@
 namespace Restz\OpenAPI\Models;
 
 
-class SecurityRequirements
+class SecurityRequirement
 {
 
 }
