@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php" : "~7.2"
+        "php": "~7.4"
     },
     "require-dev": {
         "phpunit/phpunit" : ">=8.0",
@@ -28,7 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Restz\\OpenAPI\\Tests": "tests"
+            "Restz\\OpenAPI\\Tests\\": "tests"
         }
     },
     "scripts": {
