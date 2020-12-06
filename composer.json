@@ -1,18 +1,17 @@
 {
-    "name": ":vendor/:package_name",
+    "name": "marek/openapi",
     "type": "library",
-    "description": ":package_description",
+    "description": "OpenAPI V3 Reader and Writer.",
     "keywords": [
-        ":vendor",
-        ":package_name"
+        "marek",
+        "openapi"
     ],
-    "homepage": "https://github.com/:vendor/:package_name",
+    "homepage": "https://github.com/marek/openapi",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
+            "name": "Marko Ognjenovic",
+            "email": "marko.ognjenovicgm@gmail.com",
             "role": "Developer"
         }
     ],
@@ -25,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            ":vendor\\:package_name\\": "src"
+            "marek\\openapi\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            ":vendor\\:package_name\\": "tests"
+            "marek\\openapi\\": "tests"
         }
     },
     "scripts": {
