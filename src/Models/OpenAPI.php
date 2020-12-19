@@ -11,14 +11,10 @@ class OpenAPI
      * version that the OpenAPI document uses. The openapi field SHOULD be used by
      * tooling specifications and clients to interpret the OpenAPI document.
      * This is not related to the API info.version string.
-     *
-     * @var string
      */
     protected string $openapi;
     /**
      * REQUIRED. Provides metadata about the API. The metadata MAY be used by tooling as required.
-     *
-     * @var Info
      */
     protected Info $info;
     /**
@@ -32,15 +28,13 @@ class OpenAPI
     /**
      * REQUIRED. The available paths and operations for the API.
      *
-     * @var Paths
+     * @var PathItem[]
      */
-    protected Paths $paths;
+    protected array $paths;
     /**
      * An element to hold various schemas for the specification.
-     *
-     * @var Components
      */
-    protected Components $components;
+    protected array $components;
     /**
      * A declaration of which security mechanisms can be used across the API.
      * The list of values includes alternative security requirement objects that can be used.
@@ -58,13 +52,11 @@ class OpenAPI
      * The tags that are not declared MAY be organized randomly or based on the tools' logic.
      * Each tag name in the list MUST be unique.
      *
-     * @var array
+     * @var Tag[]
      */
     protected array $tags;
     /**
      * Additional external documentation.
-     *
-     * @var ExternalDocumentation
      */
     protected ExternalDocumentation $external_doc;
 }

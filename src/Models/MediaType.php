@@ -6,5 +6,12 @@ namespace Restz\OpenAPI\Models;
 
 class MediaType
 {
-    protected string $encoding;
+    /**
+     * @var Schema|Reference
+     */
+    protected $schema;
+    /**
+     * @var Encoding[]
+     */
+    protected array $encoding;
 }
