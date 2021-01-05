@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Header
+class Header implements Model
 {
     /**
      * A brief description of the parameter. This could contain examples
@@ -53,4 +51,37 @@ class Header
      * The default value is false.
      */
     protected bool $allow_reserved;
+
+    /**
+     * Header constructor.
+     * @param  string  $description
+     * @param  bool  $required
+     * @param  bool  $deprecated
+     * @param  bool  $allow_empty_value
+     * @param  string  $style
+     * @param  string  $explode
+     * @param  bool  $allow_reserved
+     */
+    public function __construct(
+        string $description,
+        bool $required,
+        bool $deprecated,
+        bool $allow_empty_value,
+        string $style,
+        string $explode,
+        bool $allow_reserved
+    ) {
+        $this->description = $description;
+        $this->required = $required;
+        $this->deprecated = $deprecated;
+        $this->allow_empty_value = $allow_empty_value;
+        $this->style = $style;
+        $this->explode = $explode;
+        $this->allow_reserved = $allow_reserved;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

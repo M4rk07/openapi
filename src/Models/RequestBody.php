@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class RequestBody
+class RequestBody implements Model
 {
     /**
      * A brief description of the request body. This could contain
@@ -23,4 +21,22 @@ class RequestBody
      * @var MediaType[]
      */
     protected array $content;
+
+    /**
+     * RequestBody constructor.
+     * @param  string  $description
+     * @param  bool  $required
+     * @param  MediaType[]  $content
+     */
+    public function __construct(string $description, bool $required, array $content)
+    {
+        $this->description = $description;
+        $this->required = $required;
+        $this->content = $content;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class ServerVariable
+class ServerVariable implements Model
 {
     /**
      * An enumeration of string values to be used if the substitution
@@ -26,4 +24,22 @@ class ServerVariable
      * CommonMark syntax MAY be used for rich text representation.
      */
     protected string $description;
+
+    /**
+     * ServerVariable constructor.
+     * @param  string[]  $enum
+     * @param  string  $default
+     * @param  string  $description
+     */
+    public function __construct(array $enum, string $default, string $description)
+    {
+        $this->enum = $enum;
+        $this->default = $default;
+        $this->description = $description;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

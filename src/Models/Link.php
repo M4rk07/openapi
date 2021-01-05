@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Link
+class Link implements Model
 {
     /**
      * A relative or absolute URI reference to an OAS operation.
@@ -43,4 +41,34 @@ class Link
      * A server object to be used by the target operation.
      */
     protected Server $server;
+
+    /**
+     * Link constructor.
+     * @param  string  $operation_ref
+     * @param  string  $operation_id
+     * @param  array  $parameters
+     * @param  string  $description
+     * @param  array  $request_body
+     * @param  Server  $server
+     */
+    public function __construct(
+        string $operation_ref,
+        string $operation_id,
+        array $parameters,
+        string $description,
+        array $request_body,
+        Server $server
+    ) {
+        $this->operation_ref = $operation_ref;
+        $this->operation_id = $operation_id;
+        $this->parameters = $parameters;
+        $this->description = $description;
+        $this->request_body = $request_body;
+        $this->server = $server;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

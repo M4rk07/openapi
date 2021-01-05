@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class SecurityRequirement
+class SecurityRequirement implements Model
 {
     /**
      * Each name MUST correspond to a security scheme which is declared in the
@@ -16,4 +14,18 @@ class SecurityRequirement
      * @var string[]
      */
     protected array $requirements;
+
+    /**
+     * SecurityRequirement constructor.
+     * @param  string[]  $requirements
+     */
+    public function __construct(array $requirements)
+    {
+        $this->requirements = $requirements;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

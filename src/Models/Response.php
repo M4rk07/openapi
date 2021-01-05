@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Response
+class Response implements Model
 {
     /**
      * REQUIRED. A short description of the response.
@@ -36,4 +34,24 @@ class Response
      * @var Link[]|Reference[]
      */
     protected array $links;
+
+    /**
+     * Response constructor.
+     * @param  string  $description
+     * @param  Header[]|Reference[]  $headers
+     * @param  MediaType[]  $content
+     * @param  Link[]|Reference[]  $links
+     */
+    public function __construct(string $description, $headers, array $content, $links)
+    {
+        $this->description = $description;
+        $this->headers = $headers;
+        $this->content = $content;
+        $this->links = $links;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

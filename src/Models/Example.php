@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Example
+class Example implements Model
 {
     /**
      * Short description for the example.
@@ -28,4 +26,24 @@ class Example
      * use a string value to contain the example, escaping where necessary.
      */
     protected array $value;
+
+    /**
+     * Example constructor.
+     * @param  string  $summary
+     * @param  string  $description
+     * @param  string  $external_value
+     * @param  array  $value
+     */
+    public function __construct(string $summary, string $description, string $external_value, array $value)
+    {
+        $this->summary = $summary;
+        $this->description = $description;
+        $this->external_value = $external_value;
+        $this->value = $value;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

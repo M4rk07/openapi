@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class License
+class License implements Model
 {
     /**
      * REQUIRED. The license name used for the API.
@@ -15,4 +13,20 @@ class License
      * MUST be in the format of a URL.
      */
     protected string $url;
+
+    /**
+     * License constructor.
+     * @param  string  $name
+     * @param  string  $url
+     */
+    public function __construct(string $name, string $url)
+    {
+        $this->name = $name;
+        $this->url = $url;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

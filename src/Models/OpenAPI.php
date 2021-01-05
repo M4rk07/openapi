@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class OpenAPI
+class OpenAPI implements Model
 {
     /**
      * REQUIRED. This string MUST be the semantic version number of the OpenAPI Specification
@@ -59,4 +57,40 @@ class OpenAPI
      * Additional external documentation.
      */
     protected ExternalDocumentation $external_doc;
+
+    /**
+     * OpenAPI constructor.
+     * @param  string  $openapi
+     * @param  Info  $info
+     * @param  Server[]  $servers
+     * @param  PathItem[]  $paths
+     * @param  array  $components
+     * @param  SecurityRequirement[]  $security
+     * @param  Tag[]  $tags
+     * @param  ExternalDocumentation  $external_doc
+     */
+    public function __construct(
+        string $openapi,
+        Info $info,
+        array $servers,
+        array $paths,
+        array $components,
+        array $security,
+        array $tags,
+        ExternalDocumentation $external_doc
+    ) {
+        $this->openapi = $openapi;
+        $this->info = $info;
+        $this->servers = $servers;
+        $this->paths = $paths;
+        $this->components = $components;
+        $this->security = $security;
+        $this->tags = $tags;
+        $this->external_doc = $external_doc;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class PathItem
+class PathItem implements Model
 {
     /**
      * Allows for an external definition of this path item.
@@ -45,7 +43,7 @@ class PathItem
      */
     protected Operation $options;
     /**
-     * 	A definition of a HEAD operation on this path.
+     * A definition of a HEAD operation on this path.
      */
     protected Operation $head;
     /**
@@ -73,4 +71,55 @@ class PathItem
      * @var Parameter[]|Reference[]
      */
     protected array $parameters;
+
+    /**
+     * PathItem constructor.
+     * @param  string  $ref
+     * @param  string  $summary
+     * @param  string  $description
+     * @param  Operation  $get
+     * @param  Operation  $put
+     * @param  Operation  $post
+     * @param  Operation  $delete
+     * @param  Operation  $options
+     * @param  Operation  $head
+     * @param  Operation  $patch
+     * @param  Operation  $trace
+     * @param  Server[]  $servers
+     * @param  Parameter[]|Reference[]  $parameters
+     */
+    public function __construct(
+        string $ref,
+        string $summary,
+        string $description,
+        Operation $get,
+        Operation $put,
+        Operation $post,
+        Operation $delete,
+        Operation $options,
+        Operation $head,
+        Operation $patch,
+        Operation $trace,
+        array $servers,
+        $parameters
+    ) {
+        $this->ref = $ref;
+        $this->summary = $summary;
+        $this->description = $description;
+        $this->get = $get;
+        $this->put = $put;
+        $this->post = $post;
+        $this->delete = $delete;
+        $this->options = $options;
+        $this->head = $head;
+        $this->patch = $patch;
+        $this->trace = $trace;
+        $this->servers = $servers;
+        $this->parameters = $parameters;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

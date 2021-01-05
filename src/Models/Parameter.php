@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Parameter
+class Parameter implements Model
 {
     /**
      * REQUIRED. The name of the parameter. Parameter names are case sensitive.
@@ -82,4 +80,49 @@ class Parameter
      * @var MediaType[]
      */
     protected array $content;
+
+    /**
+     * Parameter constructor.
+     * @param  string  $name
+     * @param  string  $in
+     * @param  string  $description
+     * @param  bool  $required
+     * @param  bool  $deprecated
+     * @param  bool  $allow_empty_value
+     * @param  string  $style
+     * @param  string  $explode
+     * @param  bool  $allow_reserved
+     * @param  Reference|Schema  $schema
+     * @param  MediaType[]  $content
+     */
+    public function __construct(
+        string $name,
+        string $in,
+        string $description,
+        bool $required,
+        bool $deprecated,
+        bool $allow_empty_value,
+        string $style,
+        string $explode,
+        bool $allow_reserved,
+        $schema,
+        array $content
+    ) {
+        $this->name = $name;
+        $this->in = $in;
+        $this->description = $description;
+        $this->required = $required;
+        $this->deprecated = $deprecated;
+        $this->allow_empty_value = $allow_empty_value;
+        $this->style = $style;
+        $this->explode = $explode;
+        $this->allow_reserved = $allow_reserved;
+        $this->schema = $schema;
+        $this->content = $content;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

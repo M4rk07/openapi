@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Info
+class Info implements Model
 {
     /**
      * REQUIRED. The title of the API.
@@ -33,4 +31,34 @@ class Info
      * The license information for the exposed API.
      */
     protected License $license;
+
+    /**
+     * Info constructor.
+     * @param  string  $title
+     * @param  string  $description
+     * @param  string  $terms_of_service
+     * @param  string  $version
+     * @param  Contact  $contact
+     * @param  License  $license
+     */
+    public function __construct(
+        string $title,
+        string $description,
+        string $terms_of_service,
+        string $version,
+        Contact $contact,
+        License $license
+    ) {
+        $this->title = $title;
+        $this->description = $description;
+        $this->terms_of_service = $terms_of_service;
+        $this->version = $version;
+        $this->contact = $contact;
+        $this->license = $license;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

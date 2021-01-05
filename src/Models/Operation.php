@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Operation
+class Operation implements Model
 {
     /**
      * A list of tags for API documentation control. Tags can be
@@ -86,4 +84,52 @@ class Operation
      * it will be overridden by this value.
      */
     protected array $servers;
+
+    /**
+     * Operation constructor.
+     * @param  string[]  $tags
+     * @param  string  $summary
+     * @param  string  $description
+     * @param  string  $operation_id
+     * @param  string  $deprecated
+     * @param  ExternalDocumentation  $external_docs
+     * @param  array  $parameters
+     * @param  Reference|RequestBody  $request_body
+     * @param  Response[]  $responses
+     * @param  array  $callbacks
+     * @param  array  $security
+     * @param  array  $servers
+     */
+    public function __construct(
+        array $tags,
+        string $summary,
+        string $description,
+        string $operation_id,
+        string $deprecated,
+        ExternalDocumentation $external_docs,
+        array $parameters,
+        $request_body,
+        array $responses,
+        array $callbacks,
+        array $security,
+        array $servers
+    ) {
+        $this->tags = $tags;
+        $this->summary = $summary;
+        $this->description = $description;
+        $this->operation_id = $operation_id;
+        $this->deprecated = $deprecated;
+        $this->external_docs = $external_docs;
+        $this->parameters = $parameters;
+        $this->request_body = $request_body;
+        $this->responses = $responses;
+        $this->callbacks = $callbacks;
+        $this->security = $security;
+        $this->servers = $servers;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

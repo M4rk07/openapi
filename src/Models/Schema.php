@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Schema
+class Schema implements Model
 {
     /**
      * A true value adds "null" to the allowed type specified by the type keyword,
@@ -51,4 +49,37 @@ class Schema
      * a string value can be used to contain the example with escaping where necessary.
      */
     protected array $example;
+
+    /**
+     * Schema constructor.
+     * @param  bool  $nullable
+     * @param  bool  $read_only
+     * @param  bool  $write_only
+     * @param  bool  $deprecated
+     * @param  Discriminator  $discriminator
+     * @param  ExternalDocumentation  $external_docs
+     * @param  array  $example
+     */
+    public function __construct(
+        bool $nullable,
+        bool $read_only,
+        bool $write_only,
+        bool $deprecated,
+        Discriminator $discriminator,
+        ExternalDocumentation $external_docs,
+        array $example
+    ) {
+        $this->nullable = $nullable;
+        $this->read_only = $read_only;
+        $this->write_only = $write_only;
+        $this->deprecated = $deprecated;
+        $this->discriminator = $discriminator;
+        $this->external_docs = $external_docs;
+        $this->example = $example;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

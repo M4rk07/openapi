@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class SecurityScheme
+class SecurityScheme implements Model
 {
     /**
      * REQUIRED. The type of the security scheme.
@@ -51,4 +49,40 @@ class SecurityScheme
      * @var OAuthFlow[]
      */
     protected array $flows;
+
+    /**
+     * SecurityScheme constructor.
+     * @param  string  $type
+     * @param  string  $description
+     * @param  string  $name
+     * @param  string  $in
+     * @param  string  $scheme
+     * @param  string  $open_id_connect_url
+     * @param  string  $bearer_format
+     * @param  OAuthFlow[]  $flows
+     */
+    public function __construct(
+        string $type,
+        string $description,
+        string $name,
+        string $in,
+        string $scheme,
+        string $open_id_connect_url,
+        string $bearer_format,
+        array $flows
+    ) {
+        $this->type = $type;
+        $this->description = $description;
+        $this->name = $name;
+        $this->in = $in;
+        $this->scheme = $scheme;
+        $this->open_id_connect_url = $open_id_connect_url;
+        $this->bearer_format = $bearer_format;
+        $this->flows = $flows;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }

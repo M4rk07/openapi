@@ -4,7 +4,7 @@
 namespace Restz\OpenAPI\Models;
 
 
-class Encoding
+class Encoding implements Model
 {
     /**
      * The Content-Type for encoding a specific property. Default value depends
@@ -14,7 +14,7 @@ class Encoding
      * The value can be a specific media type (e.g. application/json),
      * a wildcard media type (e.g. image/*), or a comma-separated list of the two types.
      */
-    protected string $content_type;
+    protected ?string $content_type;
     /**
      * A map allowing additional information to be provided as headers,
      * for example Content-Disposition. Content-Type is described separately
@@ -31,7 +31,7 @@ class Encoding
      * This property SHALL be ignored if the request body media type
      * is not application/x-www-form-urlencoded.
      */
-    protected string $style;
+    protected ?string $style;
     /**
      * When this is true, property values of type array or object generate
      * separate parameters for each value of the array, or key-value-pair of the map.
@@ -48,4 +48,37 @@ class Encoding
      * body media type is not application/x-www-form-urlencoded.
      */
     protected bool $allow_reserved;
+
+    /**
+     * Encoding constructor.
+     * @param  string|null  $content_type
+     * @param  Header[]|Reference[]  $headers
+     * @param  string|null  $style
+     * @param  bool  $explode
+     * @param  bool  $allow_reserved
+     */
+    public function __construct(
+        ?string $content_type,
+        array $headers,
+        ?string $style,
+        bool $explode,
+        bool $allow_reserved
+    ) {
+        $this->content_type = $content_type;
+        $this->headers = $headers;
+        $this->style = $style;
+        $this->explode = $explode;
+        $this->allow_reserved = $allow_reserved;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        return new self(
+            $data['contentType'] ?? null,
+            $data['headers'] ?? [],
+            $data['style'] ?? null,
+            $data['explode'] ?? false,
+            $data['allowReserved'] ?? false
+        );
+    }
 }

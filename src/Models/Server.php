@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Server
+class Server implements Model
 {
     /**
      * REQUIRED. A URL to the target host. This URL supports Server Variables
@@ -25,4 +23,22 @@ class Server
      * @var ServerVariable[]
      */
     protected array $variables;
+
+    /**
+     * Server constructor.
+     * @param  string  $url
+     * @param  string  $description
+     * @param  ServerVariable[]  $variables
+     */
+    public function __construct(string $url, string $description, array $variables)
+    {
+        $this->url = $url;
+        $this->description = $description;
+        $this->variables = $variables;
+    }
+
+    public static function fromArray(array $data): Model
+    {
+        // TODO: Implement fromArray() method.
+    }
 }
