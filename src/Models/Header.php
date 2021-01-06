@@ -8,7 +8,7 @@ class Header implements Model
      * A brief description of the parameter. This could contain examples
      * of use. CommonMark syntax MAY be used for rich text representation.
      */
-    protected string $description;
+    protected ?string $description;
     /**
      * Determines whether this parameter is mandatory. If the parameter location is "path", this
      * property is REQUIRED and its value MUST be true. Otherwise,
@@ -36,14 +36,14 @@ class Header implements Model
      * Possible values:
      * matrix, label, form, simple, spaceDelimited, pipeDelimited, deepObject
      */
-    protected string $style;
+    protected ?string $style;
     /**
      * When this is true, parameter values of type array or object generate separate parameters
      * for each value of the array or key-value pair of the map. For other types of parameters
      * this property has no effect. When style is form, the default value is true. For all
      * other styles, the default value is false.
      */
-    protected string $explode;
+    protected bool $explode;
     /**
      * Determines whether the parameter value SHOULD allow reserved characters, as
      * defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.
@@ -54,21 +54,21 @@ class Header implements Model
 
     /**
      * Header constructor.
-     * @param  string  $description
+     * @param  string|null  $description
      * @param  bool  $required
      * @param  bool  $deprecated
      * @param  bool  $allow_empty_value
-     * @param  string  $style
-     * @param  string  $explode
+     * @param  string|null  $style
+     * @param  bool  $explode
      * @param  bool  $allow_reserved
      */
     public function __construct(
-        string $description,
+        ?string $description,
         bool $required,
         bool $deprecated,
         bool $allow_empty_value,
-        string $style,
-        string $explode,
+        ?string $style,
+        bool $explode,
         bool $allow_reserved
     ) {
         $this->description = $description;
@@ -80,8 +80,16 @@ class Header implements Model
         $this->allow_reserved = $allow_reserved;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['description'] ?? null,
+            $data['required'] ?? false,
+            $data['deprecated'] ?? false,
+            $data['allowEmptyValue'] ?? false,
+            $data['style'] ?? null,
+            $data['explode'] ?? false,
+            $data['allowReserved'] ?? false
+        );
     }
 }

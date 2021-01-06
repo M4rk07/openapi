@@ -24,8 +24,10 @@ class SecurityRequirement implements Model
         $this->requirements = $requirements;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['requirements'] ?? []
+        );
     }
 }

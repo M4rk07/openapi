@@ -23,7 +23,7 @@ class Parameter implements Model
      * A brief description of the parameter. This could contain examples
      * of use. CommonMark syntax MAY be used for rich text representation.
      */
-    protected string $description;
+    protected ?string $description;
     /**
      * Determines whether this parameter is mandatory. If the parameter location is "path", this
      * property is REQUIRED and its value MUST be true. Otherwise,
@@ -51,14 +51,14 @@ class Parameter implements Model
      * Possible values:
      * matrix, label, form, simple, spaceDelimited, pipeDelimited, deepObject
      */
-    protected string $style;
+    protected ?string $style;
     /**
      * When this is true, parameter values of type array or object generate separate parameters
      * for each value of the array or key-value pair of the map. For other types of parameters
      * this property has no effect. When style is form, the default value is true. For all
      * other styles, the default value is false.
      */
-    protected string $explode;
+    protected bool $explode;
     /**
      * Determines whether the parameter value SHOULD allow reserved characters, as
      * defined by RFC3986 :/?#[]@!$&'()*+,;= to be included without percent-encoding.
@@ -69,7 +69,7 @@ class Parameter implements Model
     /**
      * The schema defining the type used for the parameter.
      *
-     * @var Schema|Reference
+     * @var Schema|Reference|null
      */
     protected $schema;
     /**
@@ -85,25 +85,25 @@ class Parameter implements Model
      * Parameter constructor.
      * @param  string  $name
      * @param  string  $in
-     * @param  string  $description
+     * @param  string|null  $description
      * @param  bool  $required
      * @param  bool  $deprecated
      * @param  bool  $allow_empty_value
-     * @param  string  $style
-     * @param  string  $explode
+     * @param  string|null  $style
+     * @param  bool  $explode
      * @param  bool  $allow_reserved
-     * @param  Reference|Schema  $schema
+     * @param  Reference|Schema|null  $schema
      * @param  MediaType[]  $content
      */
     public function __construct(
         string $name,
         string $in,
-        string $description,
+        ?string $description,
         bool $required,
         bool $deprecated,
         bool $allow_empty_value,
-        string $style,
-        string $explode,
+        ?string $style,
+        bool $explode,
         bool $allow_reserved,
         $schema,
         array $content
@@ -121,8 +121,26 @@ class Parameter implements Model
         $this->content = $content;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        $content = $data['content'] ?? [];
+
+        foreach ($content as &$media_type) {
+            $media_type = MediaType::fromArray($media_type);
+        }
+
+        return new self(
+            $data['name'],
+            $data['in'],
+            $data['description'] ?? null,
+            $data['required'] ?? false,
+            $data['deprecated'] ?? false,
+            $data['allowEmptyValue'] ?? false,
+            $data['style'] ?? null,
+            $data['explode'] ?? false,
+            $data['allowReserved'] ?? false,
+            isset($data['schema']) ? Schema::fromArray($data['schema']) : null,
+            $content
+        );
     }
 }

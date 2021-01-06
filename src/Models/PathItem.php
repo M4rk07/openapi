@@ -10,50 +10,50 @@ class PathItem implements Model
      * In case a Path Item Object field appears both in the defined object and
      * the referenced object, the behavior is undefined.
      */
-    protected string $ref;
+    protected ?string $ref;
     /**
      * An optional, string summary, intended to apply
      * to all operations in this path.
      */
-    protected string $summary;
+    protected ?string $summary;
     /**
      * An optional, string description, intended to apply to all
      * operations in this path. CommonMark syntax MAY be used
      * for rich text representation.
      */
-    protected string $description;
+    protected ?string $description;
     /**
      * A definition of a GET operation on this path.
      */
-    protected Operation $get;
+    protected ?Operation $get;
     /**
      * A definition of a PUT operation on this path.
      */
-    protected Operation $put;
+    protected ?Operation $put;
     /**
      * A definition of a POST operation on this path.
      */
-    protected Operation $post;
+    protected ?Operation $post;
     /**
      * A definition of a DELETE operation on this path.
      */
-    protected Operation $delete;
+    protected ?Operation $delete;
     /**
      * A definition of a OPTIONS operation on this path.
      */
-    protected Operation $options;
+    protected ?Operation $options;
     /**
      * A definition of a HEAD operation on this path.
      */
-    protected Operation $head;
+    protected ?Operation $head;
     /**
      * A definition of a PATCH operation on this path.
      */
-    protected Operation $patch;
+    protected ?Operation $patch;
     /**
      * A definition of a TRACE operation on this path.
      */
-    protected Operation $trace;
+    protected ?Operation $trace;
     /**
      * An alternative server array to service all operations in this path.
      *
@@ -74,32 +74,32 @@ class PathItem implements Model
 
     /**
      * PathItem constructor.
-     * @param  string  $ref
-     * @param  string  $summary
-     * @param  string  $description
-     * @param  Operation  $get
-     * @param  Operation  $put
-     * @param  Operation  $post
-     * @param  Operation  $delete
-     * @param  Operation  $options
-     * @param  Operation  $head
-     * @param  Operation  $patch
-     * @param  Operation  $trace
+     * @param  string|null  $ref
+     * @param  string|null  $summary
+     * @param  string|null  $description
+     * @param  Operation|null  $get
+     * @param  Operation|null  $put
+     * @param  Operation|null  $post
+     * @param  Operation|null  $delete
+     * @param  Operation|null  $options
+     * @param  Operation|null  $head
+     * @param  Operation|null  $patch
+     * @param  Operation|null  $trace
      * @param  Server[]  $servers
      * @param  Parameter[]|Reference[]  $parameters
      */
     public function __construct(
-        string $ref,
-        string $summary,
-        string $description,
-        Operation $get,
-        Operation $put,
-        Operation $post,
-        Operation $delete,
-        Operation $options,
-        Operation $head,
-        Operation $patch,
-        Operation $trace,
+        ?string $ref,
+        ?string $summary,
+        ?string $description,
+        ?Operation $get,
+        ?Operation $put,
+        ?Operation $post,
+        ?Operation $delete,
+        ?Operation $options,
+        ?Operation $head,
+        ?Operation $patch,
+        ?Operation $trace,
         array $servers,
         $parameters
     ) {
@@ -118,8 +118,33 @@ class PathItem implements Model
         $this->parameters = $parameters;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        $servers = $data['servers'] ?? [];
+        $parameters = $data['parameters'] ?? [];
+
+        foreach ($servers as &$server) {
+            $server = Server::fromArray($server);
+        }
+
+        foreach ($parameters as &$parameter) {
+            $parameter = Parameter::fromArray($parameter);
+        }
+
+        return new self(
+            $data['ref'] ?? null,
+            $data['summary'] ?? null,
+            $data['description'] ?? null,
+            isset($data['get']) ? Operation::fromArray($data['get']) : null,
+            isset($data['put']) ? Operation::fromArray($data['put']) : null,
+            isset($data['post']) ? Operation::fromArray($data['post']) : null,
+            isset($data['delete']) ? Operation::fromArray($data['delete']) : null,
+            isset($data['options']) ? Operation::fromArray($data['options']) : null,
+            isset($data['head']) ? Operation::fromArray($data['head']) : null,
+            isset($data['patch']) ? Operation::fromArray($data['patch']) : null,
+            isset($data['trace']) ? Operation::fromArray($data['trace']) : null,
+            $servers,
+            $parameters
+        );
     }
 }

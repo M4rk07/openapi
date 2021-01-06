@@ -11,13 +11,13 @@ class Link implements Model
      * values MAY be used to locate an existing Operation Object in
      * the OpenAPI definition.
      */
-    protected string $operation_ref;
+    protected ?string $operation_ref;
     /**
      * The name of an existing, resolvable OAS operation,
      * as defined with a unique operationId. This field is mutually
      * exclusive of the operationRef field.
      */
-    protected string $operation_id;
+    protected ?string $operation_id;
     /**
      * A map representing parameters to pass to an operation as specified with
      * operationId or identified via operationRef. The key is the parameter
@@ -31,7 +31,7 @@ class Link implements Model
      * A description of the link.
      * CommonMark syntax MAY be used for rich text representation.
      */
-    protected string $description;
+    protected ?string $description;
     /**
      * A literal value or {expression} to use as a
      * request body when calling the target operation.
@@ -40,24 +40,24 @@ class Link implements Model
     /**
      * A server object to be used by the target operation.
      */
-    protected Server $server;
+    protected ?Server $server;
 
     /**
      * Link constructor.
-     * @param  string  $operation_ref
-     * @param  string  $operation_id
+     * @param  string|null  $operation_ref
+     * @param  string|null  $operation_id
      * @param  array  $parameters
-     * @param  string  $description
+     * @param  string|null  $description
      * @param  array  $request_body
-     * @param  Server  $server
+     * @param  Server|null  $server
      */
     public function __construct(
-        string $operation_ref,
-        string $operation_id,
+        ?string $operation_ref,
+        ?string $operation_id,
         array $parameters,
-        string $description,
+        ?string $description,
         array $request_body,
-        Server $server
+        ?Server $server
     ) {
         $this->operation_ref = $operation_ref;
         $this->operation_id = $operation_id;
@@ -67,8 +67,15 @@ class Link implements Model
         $this->server = $server;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['operationRef'] ?? null,
+            $data['operationId'] ?? null,
+            $data['parameters'] ?? [],
+            $data['description'] ?? null,
+            $data['requestBody'] ?? [],
+            $data['server'] ? Server::fromArray($data['server']) : null
+        );
     }
 }

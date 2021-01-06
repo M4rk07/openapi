@@ -5,29 +5,32 @@ namespace Restz\OpenAPI\Models;
 class ExternalDocumentation implements Model
 {
     /**
-     * A short description of the target documentation.
-     * CommonMark syntax MAY be used for rich text representation
-     */
-    protected string $description;
-    /**
      * REQUIRED. The URL for the target documentation.
      * Value MUST be in the format of a URL.
      */
     protected string $url;
+    /**
+     * A short description of the target documentation.
+     * CommonMark syntax MAY be used for rich text representation
+     */
+    protected ?string $description;
 
     /**
      * ExternalDocumentation constructor.
-     * @param  string  $description
      * @param  string  $url
+     * @param  string|null  $description
      */
-    public function __construct(string $description, string $url)
+    public function __construct(string $url, ?string $description)
     {
         $this->description = $description;
         $this->url = $url;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['url'],
+            $data['description'] ?? null
+        );
     }
 }

@@ -5,7 +5,7 @@ namespace Restz\OpenAPI\Models;
 class MediaType implements Model
 {
     /**
-     * @var Schema|Reference
+     * @var Schema|Reference|null
      */
     protected $schema;
     /**
@@ -15,7 +15,7 @@ class MediaType implements Model
 
     /**
      * MediaType constructor.
-     * @param  Reference|Schema  $schema
+     * @param  Reference|Schema|null  $schema
      * @param  Encoding[]  $encoding
      */
     public function __construct($schema, array $encoding)
@@ -24,8 +24,11 @@ class MediaType implements Model
         $this->encoding = $encoding;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['schema'] ? Schema::fromArray($data['schema']) : null,
+            $data['encoding'] ?? []
+        );
     }
 }

@@ -32,7 +32,7 @@ class Contact implements Model
         $this->email = $email;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
         return new self(
             $data['name'] ?? null,

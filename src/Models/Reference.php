@@ -18,7 +18,7 @@ class Reference implements Model
         $this->ref = $ref;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
         // TODO: Implement fromArray() method.
     }

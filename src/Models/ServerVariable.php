@@ -23,23 +23,27 @@ class ServerVariable implements Model
      * An optional description for the server variable.
      * CommonMark syntax MAY be used for rich text representation.
      */
-    protected string $description;
+    protected ?string $description;
 
     /**
      * ServerVariable constructor.
      * @param  string[]  $enum
      * @param  string  $default
-     * @param  string  $description
+     * @param  string|null  $description
      */
-    public function __construct(array $enum, string $default, string $description)
+    public function __construct(array $enum, string $default, ?string $description)
     {
         $this->enum = $enum;
         $this->default = $default;
         $this->description = $description;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['enum'] ?? [],
+            $data['default'],
+            $data['description'] ?? null
+        );
     }
 }

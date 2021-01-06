@@ -5,11 +5,6 @@ namespace Restz\OpenAPI\Models;
 class RequestBody implements Model
 {
     /**
-     * A brief description of the request body. This could contain
-     * examples of use. CommonMark syntax MAY be used for rich text representation.
-     */
-    protected string $description;
-    /**
      * Determines if the request body is required in the request. Defaults to false.
      */
     protected bool $required;
@@ -21,22 +16,37 @@ class RequestBody implements Model
      * @var MediaType[]
      */
     protected array $content;
+    /**
+     * A brief description of the request body. This could contain
+     * examples of use. CommonMark syntax MAY be used for rich text representation.
+     */
+    protected ?string $description;
 
     /**
      * RequestBody constructor.
-     * @param  string  $description
      * @param  bool  $required
      * @param  MediaType[]  $content
+     * @param  string|null  $description
      */
-    public function __construct(string $description, bool $required, array $content)
+    public function __construct(bool $required, array $content, ?string $description)
     {
-        $this->description = $description;
         $this->required = $required;
         $this->content = $content;
+        $this->description = $description;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        $content = $data['content'];
+
+        foreach ($content as &$media_type) {
+            $media_type = MediaType::fromArray($media_type);
+        }
+
+        return new self(
+            $data['required'] ?? false,
+            $content,
+            $data['description'] ?? null,
+        );
     }
 }

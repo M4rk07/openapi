@@ -38,11 +38,11 @@ class Schema implements Model
      * used to differentiate between other schemas which may satisfy the payload
      * description. See Composition and Inheritance for more details.
      */
-    protected Discriminator $discriminator;
+    protected ?Discriminator $discriminator;
     /**
      * Additional external documentation for this schema.
      */
-    protected ExternalDocumentation $external_docs;
+    protected ?ExternalDocumentation $external_docs;
     /**
      * A free-form property to include an example of an instance for this schema.
      * To represent examples that cannot be naturally represented in JSON or YAML,
@@ -56,8 +56,8 @@ class Schema implements Model
      * @param  bool  $read_only
      * @param  bool  $write_only
      * @param  bool  $deprecated
-     * @param  Discriminator  $discriminator
-     * @param  ExternalDocumentation  $external_docs
+     * @param  Discriminator|null  $discriminator
+     * @param  ExternalDocumentation|null  $external_docs
      * @param  array  $example
      */
     public function __construct(
@@ -78,8 +78,16 @@ class Schema implements Model
         $this->example = $example;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['nullable'] ?? false,
+            $data['readOnly'] ?? false,
+            $data['writeOnly'] ?? false,
+            $data['deprecated'] ?? false,
+            isset($data['discriminator']) ? Discriminator::fromArray($data['discriminator']) : null,
+            isset($data['externalDoc']) ? ExternalDocumentation::fromArray($data['externalDoc']) : null,
+            $data['example'] ?? []
+        );
     }
 }

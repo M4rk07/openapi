@@ -15,7 +15,7 @@ class Server implements Model
      * An optional string describing the host designated by the URL.
      * CommonMark syntax MAY be used for rich text representation.
      */
-    protected string $description;
+    protected ?string $description;
     /**
      * A map between a variable name and its value.
      * The value is used for substitution in the server's URL template.
@@ -27,18 +27,28 @@ class Server implements Model
     /**
      * Server constructor.
      * @param  string  $url
-     * @param  string  $description
+     * @param  string|null  $description
      * @param  ServerVariable[]  $variables
      */
-    public function __construct(string $url, string $description, array $variables)
+    public function __construct(string $url, ?string $description, array $variables)
     {
         $this->url = $url;
         $this->description = $description;
         $this->variables = $variables;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        $variables = $data['variables'] ?? [];
+
+        foreach ($variables as &$server_variable) {
+            $server_variable = ServerVariable::fromArray($data['variables']);
+        }
+
+        return new self(
+            $data['url'],
+            $data['description'] ?? null,
+            $variables
+        );
     }
 }

@@ -18,7 +18,7 @@ class OAuthFlow implements Model
      * The URL to be used for obtaining refresh tokens.
      * This MUST be in the form of a URL.
      */
-    protected string $refresh_url;
+    protected ?string $refresh_url;
     /**
      * REQUIRED. The available scopes for the OAuth2 security scheme.
      * A map between the scope name and a short description for it. The map MAY be empty.
@@ -42,8 +42,13 @@ class OAuthFlow implements Model
         $this->scopes = $scopes;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['authorizationUrl'],
+            $data['tokenUrl'],
+            $data['refreshUrl'] ?? null,
+            $data['scopes'] ?? []
+        );
     }
 }

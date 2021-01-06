@@ -14,12 +14,12 @@ class Operation implements Model
     /**
      * A short summary of what the operation does.
      */
-    protected string $summary;
+    protected ?string $summary;
     /**
      * A verbose explanation of the operation behavior.
      * CommonMark syntax MAY be used for rich text representation.
      */
-    protected string $description;
+    protected ?string $description;
     /**
      * Unique string used to identify the operation. The id MUST be
      * unique among all operations described in the API. The operationId
@@ -27,16 +27,16 @@ class Operation implements Model
      * to uniquely identify an operation, therefore, it is RECOMMENDED to
      * follow common programming naming conventions.
      */
-    protected string $operation_id;
+    protected ?string $operation_id;
     /**
      * Declares this operation to be deprecated. Consumers SHOULD
      * refrain from usage of the declared operation. Default value is false.
      */
-    protected string $deprecated;
+    protected bool $deprecated;
     /**
      * Additional external documentation for this operation.
      */
-    protected ExternalDocumentation $external_docs;
+    protected ?ExternalDocumentation $external_docs;
     /**
      * A list of parameters that are applicable for this operation.
      * If a parameter is already defined at the Path Item, the new definition
@@ -52,7 +52,7 @@ class Operation implements Model
      * semantics for request bodies. In other cases where the HTTP spec is vague,
      * requestBody SHALL be ignored by consumers.
      *
-     * @var RequestBody|Reference
+     * @var RequestBody|Reference|null
      */
     protected $request_body;
     /**
@@ -88,13 +88,13 @@ class Operation implements Model
     /**
      * Operation constructor.
      * @param  string[]  $tags
-     * @param  string  $summary
-     * @param  string  $description
-     * @param  string  $operation_id
-     * @param  string  $deprecated
-     * @param  ExternalDocumentation  $external_docs
+     * @param  string|null  $summary
+     * @param  string|null  $description
+     * @param  string|null  $operation_id
+     * @param  bool  $deprecated
+     * @param  ExternalDocumentation|null  $external_docs
      * @param  array  $parameters
-     * @param  Reference|RequestBody  $request_body
+     * @param  Reference|RequestBody|null  $request_body
      * @param  Response[]  $responses
      * @param  array  $callbacks
      * @param  array  $security
@@ -102,11 +102,11 @@ class Operation implements Model
      */
     public function __construct(
         array $tags,
-        string $summary,
-        string $description,
-        string $operation_id,
-        string $deprecated,
-        ExternalDocumentation $external_docs,
+        ?string $summary,
+        ?string $description,
+        ?string $operation_id,
+        bool $deprecated,
+        ?ExternalDocumentation $external_docs,
         array $parameters,
         $request_body,
         array $responses,
@@ -128,8 +128,27 @@ class Operation implements Model
         $this->servers = $servers;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        $responses = $data['responses'] ?? [];
+
+        foreach ($responses as &$response) {
+            $response = Response::fromArray($response);
+        }
+
+        return new self(
+            $data['tags'] ?? [],
+            $data['summary'] ?? null,
+            $data['description'] ?? null,
+            $data['operationId'] ?? null,
+            $data['deprecated'] ?? false,
+            isset($data['externalDocs']) ? ExternalDocumentation::fromArray($data['externalDocs']) : null,
+            $data['parameters'] ?? [],
+            isset($data['requestBody']) ? RequestBody::fromArray($data['requestBody']) : null,
+            $responses,
+            $data['callbacks'] ?? [],
+            $data['security'] ?? [],
+            $data['servers'] ?? [],
+        );
     }
 }

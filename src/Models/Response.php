@@ -50,8 +50,29 @@ class Response implements Model
         $this->links = $links;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        $headers = $data['headers'] ?? [];
+        $content = $data['content'] ?? [];
+        $links = $data['links'] ?? [];
+
+        foreach ($headers as &$header) {
+            $header = Header::fromArray($header);
+        }
+
+        foreach ($content as &$media_type) {
+            $media_type = MediaType::fromArray($media_type);
+        }
+
+        foreach ($links as &$link) {
+            $link = Link::fromArray($link);
+        }
+
+        return new self(
+            $data['description'],
+            $headers,
+            $content,
+            $links
+        );
     }
 }

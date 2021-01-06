@@ -56,7 +56,7 @@ class OpenAPI implements Model
     /**
      * Additional external documentation.
      */
-    protected ExternalDocumentation $external_doc;
+    protected ?ExternalDocumentation $external_doc;
 
     /**
      * OpenAPI constructor.
@@ -67,7 +67,7 @@ class OpenAPI implements Model
      * @param  array  $components
      * @param  SecurityRequirement[]  $security
      * @param  Tag[]  $tags
-     * @param  ExternalDocumentation  $external_doc
+     * @param  ExternalDocumentation|null  $external_doc
      */
     public function __construct(
         string $openapi,
@@ -77,7 +77,7 @@ class OpenAPI implements Model
         array $components,
         array $security,
         array $tags,
-        ExternalDocumentation $external_doc
+        ?ExternalDocumentation $external_doc
     ) {
         $this->openapi = $openapi;
         $this->info = $info;
@@ -89,8 +89,38 @@ class OpenAPI implements Model
         $this->external_doc = $external_doc;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        $servers = $data['servers'] ?? [];
+        $paths = $data['paths'] ?? [];
+        $security = $data['security'] ?? [];
+        $tags = $data['tags'] ?? [];
+
+        foreach ($servers as &$server) {
+            $server = Server::fromArray($server);
+        }
+
+        foreach ($paths as &$path) {
+            $path = PathItem::fromArray($path);
+        }
+
+        foreach ($security as &$security_requirement) {
+            $security_requirement = SecurityRequirement::fromArray($security_requirement);
+        }
+
+        foreach ($tags as &$tag) {
+            $tag = Tag::fromArray($tag);
+        }
+
+        return new self(
+            $data['openapi'],
+            Info::fromArray($data['info']),
+            $servers,
+            $paths,
+            $data['components'] ?? [],
+            $security,
+            $tags,
+            isset($data['externalDoc']) ? ExternalDocumentation::fromArray($data['externalDoc']) : null
+        );
     }
 }

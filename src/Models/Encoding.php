@@ -71,11 +71,17 @@ class Encoding implements Model
         $this->allow_reserved = $allow_reserved;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
+        $headers = $data['headers'] ?? [];
+
+        foreach ($headers as &$header) {
+            $header = Header::fromArray($header);
+        }
+
         return new self(
             $data['contentType'] ?? null,
-            $data['headers'] ?? [],
+            $headers,
             $data['style'] ?? null,
             $data['explode'] ?? false,
             $data['allowReserved'] ?? false

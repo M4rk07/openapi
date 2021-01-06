@@ -12,21 +12,24 @@ class License implements Model
      * A URL to the license used for the API.
      * MUST be in the format of a URL.
      */
-    protected string $url;
+    protected ?string $url;
 
     /**
      * License constructor.
      * @param  string  $name
-     * @param  string  $url
+     * @param  ?string  $url
      */
-    public function __construct(string $name, string $url)
+    public function __construct(string $name, ?string $url)
     {
         $this->name = $name;
         $this->url = $url;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        return new self(
+            $data['name'],
+            $data['url'] ?? null
+        );
     }
 }

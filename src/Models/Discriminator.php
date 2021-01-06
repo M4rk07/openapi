@@ -28,7 +28,7 @@ class Discriminator implements Model
         $this->mapping = $mapping;
     }
 
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
         return new self(
             $data['propertyName'],
