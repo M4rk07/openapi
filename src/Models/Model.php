@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
-
 
 interface Model
 {

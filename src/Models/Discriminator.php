@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Discriminator implements Model
+class Discriminator extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'propertyName'
+    ];
+
     /**
      * REQUIRED. The name of the property in the payload
      * that will hold the discriminator value.
@@ -28,11 +32,27 @@ class Discriminator implements Model
         $this->mapping = $mapping;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['propertyName'],
             $data['mapping'] ?? []
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getPropertyName(): string
+    {
+        return $this->property_name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getMapping(): array
+    {
+        return $this->mapping;
     }
 }

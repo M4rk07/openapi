@@ -2,7 +2,7 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Example implements Model
+class Example extends AbstractModel
 {
     /**
      * Short description for the example.
@@ -25,16 +25,16 @@ class Example implements Model
      * media types that cannot naturally represented in JSON or YAML,
      * use a string value to contain the example, escaping where necessary.
      */
-    protected array $value;
+    protected ?string $value;
 
     /**
      * Example constructor.
      * @param  string|null  $summary
      * @param  string|null  $description
      * @param  string|null  $external_value
-     * @param  array  $value
+     * @param  string|null  $value
      */
-    public function __construct(?string $summary, ?string $description, ?string $external_value, array $value)
+    public function __construct(?string $summary, ?string $description, ?string $external_value, ?string $value)
     {
         $this->summary = $summary;
         $this->description = $description;
@@ -42,13 +42,45 @@ class Example implements Model
         $this->value = $value;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['summary'] ?? null,
             $data['description'] ?? null,
             $data['externalValue'] ?? null,
-            $data['value'] ?? []
+            $data['value'] ?? null
         );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalValue(): ?string
+    {
+        return $this->external_value;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getValue(): ?string
+    {
+        return $this->value;
     }
 }

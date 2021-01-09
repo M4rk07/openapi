@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Restz\OpenAPI\Models;
 
-
-class Encoding implements Model
+class Encoding extends AbstractModel
 {
     /**
      * The Content-Type for encoding a specific property. Default value depends
@@ -71,7 +69,7 @@ class Encoding implements Model
         $this->allow_reserved = $allow_reserved;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         $headers = $data['headers'] ?? [];
 
@@ -86,5 +84,45 @@ class Encoding implements Model
             $data['explode'] ?? false,
             $data['allowReserved'] ?? false
         );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getContentType(): ?string
+    {
+        return $this->content_type;
+    }
+
+    /**
+     * @return Header[]|Reference[]
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStyle(): ?string
+    {
+        return $this->style;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExplode(): bool
+    {
+        return $this->explode;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowReserved(): bool
+    {
+        return $this->allow_reserved;
     }
 }

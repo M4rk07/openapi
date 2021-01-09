@@ -2,7 +2,7 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Header implements Model
+class Header extends AbstractModel
 {
     /**
      * A brief description of the parameter. This could contain examples
@@ -80,7 +80,7 @@ class Header implements Model
         $this->allow_reserved = $allow_reserved;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['description'] ?? null,
@@ -91,5 +91,61 @@ class Header implements Model
             $data['explode'] ?? false,
             $data['allowReserved'] ?? false
         );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired(): bool
+    {
+        return $this->required;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeprecated(): bool
+    {
+        return $this->deprecated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowEmptyValue(): bool
+    {
+        return $this->allow_empty_value;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStyle(): ?string
+    {
+        return $this->style;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExplode(): bool
+    {
+        return $this->explode;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowReserved(): bool
+    {
+        return $this->allow_reserved;
     }
 }

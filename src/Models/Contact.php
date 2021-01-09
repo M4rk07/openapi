@@ -2,7 +2,9 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Contact implements Model
+use Restz\OpenAPI\Exceptions\ParametersRequiredException;
+
+class Contact extends AbstractModel
 {
     /**
      * The identifying name of the contact person/organization.
@@ -32,12 +34,41 @@ class Contact implements Model
         $this->email = $email;
     }
 
-    public static function fromArray(array $data): self
+    /**
+     * @param  array  $data
+     * @return static
+     * @throws ParametersRequiredException
+     */
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['name'] ?? null,
             $data['url'] ?? null,
             $data['email'] ?? null
         );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
     }
 }
