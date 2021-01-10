@@ -21,10 +21,10 @@ abstract class AbstractModel implements Model
 
     /**
      * @param  array  $data
-     * @return Model
+     * @return self
      * @throws ParametersRequiredException
      */
-    public static function fromArray(array $data): Model
+    public static function fromArray(array $data): self
     {
         self::assertRequired($data);
 
@@ -33,7 +33,7 @@ abstract class AbstractModel implements Model
 
     /**
      * @param  array  $data
-     * @return Model
+     * @return self
      */
-    abstract protected static function constructFromArray(array $data): Model;
+    abstract protected static function constructFromArray(array $data): self;
 }

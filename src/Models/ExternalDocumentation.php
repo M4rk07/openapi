@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class ExternalDocumentation implements Model
+class ExternalDocumentation extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'url'
+    ];
+
     /**
      * REQUIRED. The URL for the target documentation.
      * Value MUST be in the format of a URL.
@@ -22,15 +26,31 @@ class ExternalDocumentation implements Model
      */
     public function __construct(string $url, ?string $description)
     {
-        $this->description = $description;
         $this->url = $url;
+        $this->description = $description;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['url'],
             $data['description'] ?? null
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 }

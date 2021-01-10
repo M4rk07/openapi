@@ -2,8 +2,13 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Info implements Model
+class Info extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'title',
+        'version'
+    ];
+
     /**
      * REQUIRED. The title of the API.
      */
@@ -57,15 +62,63 @@ class Info implements Model
         $this->license = $license;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['title'],
             $data['version'],
             $data['description'] ?? null,
             $data['termsOfService'] ?? null,
-            $data['contact'] ? Contact::fromArray($data['contact']) : null,
-            $data['license'] ? License::fromArray($data['license']) : null
+            isset($data['contact']) ? Contact::fromArray($data['contact']) : null,
+            isset($data['license']) ? License::fromArray($data['license']) : null
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTermsOfService(): ?string
+    {
+        return $this->terms_of_service;
+    }
+
+    /**
+     * @return Contact|null
+     */
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @return License|null
+     */
+    public function getLicense(): ?License
+    {
+        return $this->license;
     }
 }

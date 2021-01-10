@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class License implements Model
+class License extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'name'
+    ];
+
     /**
      * REQUIRED. The license name used for the API.
      */
@@ -25,11 +29,27 @@ class License implements Model
         $this->url = $url;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['name'],
             $data['url'] ?? null
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUrl(): ?string
+    {
+        return $this->url;
     }
 }
