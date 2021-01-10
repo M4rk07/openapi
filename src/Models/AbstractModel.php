@@ -14,7 +14,7 @@ abstract class AbstractModel implements Model
      */
     protected static function assertRequired(array $data): void
     {
-        if ($parameters = array_diff_key(array_flip(static::$required_parameters), $data)) {
+        if ($parameters = array_diff(static::$required_parameters, array_keys($data))) {
             throw new ParametersRequiredException($parameters);
         }
     }
