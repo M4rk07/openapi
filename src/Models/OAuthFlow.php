@@ -2,8 +2,13 @@
 
 namespace Restz\OpenAPI\Models;
 
-class OAuthFlow implements Model
+class OAuthFlow extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'authorizationUrl',
+        'tokenUrl'
+    ];
+
     /**
      * REQUIRED. The authorization URL to be used for this flow.
      * This MUST be in the form of a URL.
@@ -31,10 +36,10 @@ class OAuthFlow implements Model
      * OAuthFlow constructor.
      * @param  string  $authorization_url
      * @param  string  $token_url
-     * @param  string  $refresh_url
+     * @param  string|null  $refresh_url
      * @param  string[]  $scopes
      */
-    public function __construct(string $authorization_url, string $token_url, string $refresh_url, array $scopes)
+    public function __construct(string $authorization_url, string $token_url, ?string $refresh_url, array $scopes)
     {
         $this->authorization_url = $authorization_url;
         $this->token_url = $token_url;
@@ -42,7 +47,7 @@ class OAuthFlow implements Model
         $this->scopes = $scopes;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['authorizationUrl'],
@@ -50,5 +55,37 @@ class OAuthFlow implements Model
             $data['refreshUrl'] ?? null,
             $data['scopes'] ?? []
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorizationUrl(): string
+    {
+        return $this->authorization_url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenUrl(): string
+    {
+        return $this->token_url;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRefreshUrl(): ?string
+    {
+        return $this->refresh_url;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getScopes(): array
+    {
+        return $this->scopes;
     }
 }

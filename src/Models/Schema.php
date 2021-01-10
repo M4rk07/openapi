@@ -65,8 +65,8 @@ class Schema implements Model
         bool $read_only,
         bool $write_only,
         bool $deprecated,
-        Discriminator $discriminator,
-        ExternalDocumentation $external_docs,
+        ?Discriminator $discriminator,
+        ?ExternalDocumentation $external_docs,
         array $example
     ) {
         $this->nullable = $nullable;

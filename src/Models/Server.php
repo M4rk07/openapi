@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Server implements Model
+class Server extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'url'
+    ];
+
     /**
      * REQUIRED. A URL to the target host. This URL supports Server Variables
      * and MAY be relative, to indicate that the host location is relative to the
@@ -37,7 +41,7 @@ class Server implements Model
         $this->variables = $variables;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         $variables = $data['variables'] ?? [];
 
@@ -50,5 +54,29 @@ class Server implements Model
             $data['description'] ?? null,
             $variables
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return ServerVariable[]
+     */
+    public function getVariables(): array
+    {
+        return $this->variables;
     }
 }

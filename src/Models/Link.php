@@ -2,7 +2,7 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Link implements Model
+class Link extends AbstractModel
 {
     /**
      * A relative or absolute URI reference to an OAS operation.
@@ -36,7 +36,7 @@ class Link implements Model
      * A literal value or {expression} to use as a
      * request body when calling the target operation.
      */
-    protected array $request_body;
+    protected ?string $request_body;
     /**
      * A server object to be used by the target operation.
      */
@@ -48,7 +48,7 @@ class Link implements Model
      * @param  string|null  $operation_id
      * @param  array  $parameters
      * @param  string|null  $description
-     * @param  array  $request_body
+     * @param  string|null  $request_body
      * @param  Server|null  $server
      */
     public function __construct(
@@ -56,7 +56,7 @@ class Link implements Model
         ?string $operation_id,
         array $parameters,
         ?string $description,
-        array $request_body,
+        ?string $request_body,
         ?Server $server
     ) {
         $this->operation_ref = $operation_ref;
@@ -67,15 +67,63 @@ class Link implements Model
         $this->server = $server;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['operationRef'] ?? null,
             $data['operationId'] ?? null,
             $data['parameters'] ?? [],
             $data['description'] ?? null,
-            $data['requestBody'] ?? [],
-            $data['server'] ? Server::fromArray($data['server']) : null
+            $data['requestBody'] ?? null,
+            isset($data['server']) ? Server::fromArray($data['server']) : null
         );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOperationRef(): ?string
+    {
+        return $this->operation_ref;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOperationId(): ?string
+    {
+        return $this->operation_id;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRequestBody(): ?string
+    {
+        return $this->request_body;
+    }
+
+    /**
+     * @return Server|null
+     */
+    public function getServer(): ?Server
+    {
+        return $this->server;
     }
 }
