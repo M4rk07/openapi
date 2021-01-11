@@ -2,8 +2,14 @@
 
 namespace Restz\OpenAPI\Models;
 
-class OpenAPI implements Model
+class OpenAPI extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'openapi',
+        'info',
+        'paths'
+    ];
+
     /**
      * REQUIRED. This string MUST be the semantic version number of the OpenAPI Specification
      * version that the OpenAPI document uses. The openapi field SHOULD be used by
@@ -89,10 +95,10 @@ class OpenAPI implements Model
         $this->external_doc = $external_doc;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
+        $paths = $data['paths'];
         $servers = $data['servers'] ?? [];
-        $paths = $data['paths'] ?? [];
         $security = $data['security'] ?? [];
         $tags = $data['tags'] ?? [];
 
@@ -112,6 +118,8 @@ class OpenAPI implements Model
             $tag = Tag::fromArray($tag);
         }
 
+        // TODO: handle components
+
         return new self(
             $data['openapi'],
             Info::fromArray($data['info']),
@@ -122,5 +130,69 @@ class OpenAPI implements Model
             $tags,
             isset($data['externalDoc']) ? ExternalDocumentation::fromArray($data['externalDoc']) : null
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getOpenapi(): string
+    {
+        return $this->openapi;
+    }
+
+    /**
+     * @return Info
+     */
+    public function getInfo(): Info
+    {
+        return $this->info;
+    }
+
+    /**
+     * @return Server[]
+     */
+    public function getServers(): array
+    {
+        return $this->servers;
+    }
+
+    /**
+     * @return PathItem[]
+     */
+    public function getPaths(): array
+    {
+        return $this->paths;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComponents(): array
+    {
+        return $this->components;
+    }
+
+    /**
+     * @return SecurityRequirement[]
+     */
+    public function getSecurity(): array
+    {
+        return $this->security;
+    }
+
+    /**
+     * @return Tag[]
+     */
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @return ExternalDocumentation|null
+     */
+    public function getExternalDoc(): ?ExternalDocumentation
+    {
+        return $this->external_doc;
     }
 }

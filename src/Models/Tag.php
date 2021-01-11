@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Tag implements Model
+class Tag extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'name'
+    ];
+
     /**
      * REQUIRED. The name of the tag.
      */
@@ -31,18 +35,36 @@ class Tag implements Model
         $this->external_docs = $external_docs;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
-        $external_docs = $data['externalDocs'] ?? [];
-
-        foreach ($external_docs as &$external_doc) {
-            $external_doc = ExternalDocumentation::fromArray($data['externalDocs']);
-        }
-
         return new self(
             $data['name'],
             $data['description'] ?? null,
-            $external_docs
+            isset($data['externalDocs']) ? ExternalDocumentation::fromArray($data['externalDocs']) : null
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return ExternalDocumentation|null
+     */
+    public function getExternalDocs(): ?ExternalDocumentation
+    {
+        return $this->external_docs;
     }
 }
