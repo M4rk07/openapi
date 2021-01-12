@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class ServerVariable implements Model
+class ServerVariable extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'default'
+    ];
+
     /**
      * An enumeration of string values to be used if the substitution
      * options are from a limited set. The array SHOULD NOT be empty.
@@ -38,12 +42,36 @@ class ServerVariable implements Model
         $this->description = $description;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['enum'] ?? [],
             $data['default'],
             $data['description'] ?? null
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getEnum(): array
+    {
+        return $this->enum;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefault(): string
+    {
+        return $this->default;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 }

@@ -46,7 +46,7 @@ class Server extends AbstractModel
         $variables = $data['variables'] ?? [];
 
         foreach ($variables as &$server_variable) {
-            $server_variable = ServerVariable::fromArray($data['variables']);
+            $server_variable = ServerVariable::fromArray($server_variable);
         }
 
         return new self(
