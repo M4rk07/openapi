@@ -2,8 +2,17 @@
 
 namespace Restz\OpenAPI\Models;
 
-class SecurityScheme implements Model
+class SecurityScheme extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'type',
+        'name',
+        'in',
+        'scheme',
+        'openIdConnectUrl',
+        'flows'
+    ];
+
     /**
      * REQUIRED. The type of the security scheme.
      * Valid values are "apiKey", "http", "oauth2", "openIdConnect".
@@ -81,7 +90,7 @@ class SecurityScheme implements Model
         $this->flows = $flows;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         $flows = $data['flows'] ?? [];
 
@@ -99,5 +108,69 @@ class SecurityScheme implements Model
             $data['bearerFormat'] ?? null,
             $flows
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIn(): string
+    {
+        return $this->in;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheme(): string
+    {
+        return $this->scheme;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOpenIdConnectUrl(): string
+    {
+        return $this->open_id_connect_url;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBearerFormat(): ?string
+    {
+        return $this->bearer_format;
+    }
+
+    /**
+     * @return OAuthFlow[]
+     */
+    public function getFlows(): array
+    {
+        return $this->flows;
     }
 }
