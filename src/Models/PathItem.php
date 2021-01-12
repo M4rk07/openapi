@@ -2,15 +2,8 @@
 
 namespace Restz\OpenAPI\Models;
 
-class PathItem implements Model
+class PathItem extends AbstractModel
 {
-    /**
-     * Allows for an external definition of this path item.
-     * The referenced structure MUST be in the format of a Path Item Object.
-     * In case a Path Item Object field appears both in the defined object and
-     * the referenced object, the behavior is undefined.
-     */
-    protected ?string $ref;
     /**
      * An optional, string summary, intended to apply
      * to all operations in this path.
@@ -74,7 +67,6 @@ class PathItem implements Model
 
     /**
      * PathItem constructor.
-     * @param  string|null  $ref
      * @param  string|null  $summary
      * @param  string|null  $description
      * @param  Operation|null  $get
@@ -89,7 +81,6 @@ class PathItem implements Model
      * @param  Parameter[]|Reference[]  $parameters
      */
     public function __construct(
-        ?string $ref,
         ?string $summary,
         ?string $description,
         ?Operation $get,
@@ -103,7 +94,6 @@ class PathItem implements Model
         array $servers,
         $parameters
     ) {
-        $this->ref = $ref;
         $this->summary = $summary;
         $this->description = $description;
         $this->get = $get;
@@ -118,7 +108,7 @@ class PathItem implements Model
         $this->parameters = $parameters;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         $servers = $data['servers'] ?? [];
         $parameters = $data['parameters'] ?? [];
@@ -132,7 +122,6 @@ class PathItem implements Model
         }
 
         return new self(
-            $data['ref'] ?? null,
             $data['summary'] ?? null,
             $data['description'] ?? null,
             isset($data['get']) ? Operation::fromArray($data['get']) : null,
@@ -146,5 +135,101 @@ class PathItem implements Model
             $servers,
             $parameters
         );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getGet(): ?Operation
+    {
+        return $this->get;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getPut(): ?Operation
+    {
+        return $this->put;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getPost(): ?Operation
+    {
+        return $this->post;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getDelete(): ?Operation
+    {
+        return $this->delete;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getOptions(): ?Operation
+    {
+        return $this->options;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getHead(): ?Operation
+    {
+        return $this->head;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getPatch(): ?Operation
+    {
+        return $this->patch;
+    }
+
+    /**
+     * @return Operation|null
+     */
+    public function getTrace(): ?Operation
+    {
+        return $this->trace;
+    }
+
+    /**
+     * @return Server[]
+     */
+    public function getServers(): array
+    {
+        return $this->servers;
+    }
+
+    /**
+     * @return Parameter[]|Reference[]
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 }

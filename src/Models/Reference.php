@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Reference implements Model
+class Reference extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'ref'
+    ];
+
     /**
      * REQUIRED. The reference string.
      */
@@ -18,8 +22,16 @@ class Reference implements Model
         $this->ref = $ref;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
-        // TODO: Implement fromArray() method.
+        // TODO: Implement constructFromArray() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRef(): string
+    {
+        return $this->ref;
     }
 }
