@@ -2,8 +2,13 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Parameter implements Model
+class Parameter extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'name',
+        'in'
+    ];
+
     /**
      * REQUIRED. The name of the parameter. Parameter names are case sensitive.
      * - If in is "path", the name field MUST correspond to a template expression occurring
@@ -121,7 +126,7 @@ class Parameter implements Model
         $this->content = $content;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         $content = $data['content'] ?? [];
 
@@ -142,5 +147,93 @@ class Parameter implements Model
             isset($data['schema']) ? Schema::fromArray($data['schema']) : null,
             $content
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIn(): string
+    {
+        return $this->in;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired(): bool
+    {
+        return $this->required;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeprecated(): bool
+    {
+        return $this->deprecated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowEmptyValue(): bool
+    {
+        return $this->allow_empty_value;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStyle(): ?string
+    {
+        return $this->style;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExplode(): bool
+    {
+        return $this->explode;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowReserved(): bool
+    {
+        return $this->allow_reserved;
+    }
+
+    /**
+     * @return Reference|Schema|null
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
+
+    /**
+     * @return MediaType[]
+     */
+    public function getContent(): array
+    {
+        return $this->content;
     }
 }

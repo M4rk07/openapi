@@ -37,7 +37,7 @@ class OpenAPITest extends TestCase
             'tags' => [
                 ['name' => 'foo'],
             ],
-            'externalDoc' => ['url' => 'http://example.com'],
+            'externalDocs' => ['url' => 'http://example.com'],
         ]);
 
         $this->assertEquals('3', $openapi->getOpenapi());
@@ -51,7 +51,7 @@ class OpenAPITest extends TestCase
         $this->assertInstanceOf(SecurityRequirement::class, $openapi->getSecurity()[0]);
         $this->assertCount(1, $openapi->getTags());
         $this->assertInstanceOf(Tag::class, $openapi->getTags()[0]);
-        $this->assertInstanceOf(ExternalDocumentation::class, $openapi->getExternalDoc());
+        $this->assertInstanceOf(ExternalDocumentation::class, $openapi->getExternalDocs());
     }
 
     /**
@@ -74,7 +74,7 @@ class OpenAPITest extends TestCase
         $this->assertEmpty($openapi->getPaths());
         $this->assertEmpty($openapi->getSecurity());
         $this->assertEmpty($openapi->getTags());
-        $this->assertNull($openapi->getExternalDoc());
+        $this->assertNull($openapi->getExternalDocs());
     }
 
     /**

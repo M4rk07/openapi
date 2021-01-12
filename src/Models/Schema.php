@@ -2,7 +2,7 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Schema implements Model
+class Schema extends AbstractModel
 {
     /**
      * A true value adds "null" to the allowed type specified by the type keyword,
@@ -78,7 +78,7 @@ class Schema implements Model
         $this->example = $example;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['nullable'] ?? false,
@@ -89,5 +89,61 @@ class Schema implements Model
             isset($data['externalDoc']) ? ExternalDocumentation::fromArray($data['externalDoc']) : null,
             $data['example'] ?? []
         );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNullable(): bool
+    {
+        return $this->nullable;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReadOnly(): bool
+    {
+        return $this->read_only;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWriteOnly(): bool
+    {
+        return $this->write_only;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeprecated(): bool
+    {
+        return $this->deprecated;
+    }
+
+    /**
+     * @return Discriminator|null
+     */
+    public function getDiscriminator(): ?Discriminator
+    {
+        return $this->discriminator;
+    }
+
+    /**
+     * @return ExternalDocumentation|null
+     */
+    public function getExternalDocs(): ?ExternalDocumentation
+    {
+        return $this->external_docs;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExample(): array
+    {
+        return $this->example;
     }
 }

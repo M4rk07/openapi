@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Response implements Model
+class Response extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'description'
+    ];
+
     /**
      * REQUIRED. A short description of the response.
      * CommonMark syntax MAY be used for rich text representation.
@@ -50,7 +54,7 @@ class Response implements Model
         $this->links = $links;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         $headers = $data['headers'] ?? [];
         $content = $data['content'] ?? [];
@@ -74,5 +78,37 @@ class Response implements Model
             $content,
             $links
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return Header[]|Reference[]
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @return MediaType[]
+     */
+    public function getContent(): array
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return Link[]|Reference[]
+     */
+    public function getLinks()
+    {
+        return $this->links;
     }
 }

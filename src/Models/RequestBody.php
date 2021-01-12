@@ -2,8 +2,12 @@
 
 namespace Restz\OpenAPI\Models;
 
-class RequestBody implements Model
+class RequestBody extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'content'
+    ];
+
     /**
      * Determines if the request body is required in the request. Defaults to false.
      */
@@ -35,7 +39,7 @@ class RequestBody implements Model
         $this->description = $description;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         $content = $data['content'];
 
@@ -48,5 +52,29 @@ class RequestBody implements Model
             $content,
             $data['description'] ?? null,
         );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired(): bool
+    {
+        return $this->required;
+    }
+
+    /**
+     * @return MediaType[]
+     */
+    public function getContent(): array
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 }

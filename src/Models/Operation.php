@@ -2,8 +2,14 @@
 
 namespace Restz\OpenAPI\Models;
 
-class Operation implements Model
+use PHPUnit\Framework\Constraint\Callback;
+
+class Operation extends AbstractModel
 {
+    protected static array $required_parameters = [
+        'responses'
+    ];
+
     /**
      * A list of tags for API documentation control. Tags can be
      * used for logical grouping of operations by resources or any other qualifier.
@@ -44,6 +50,8 @@ class Operation implements Model
      * duplicated parameters. A unique parameter is defined by a combination of a name
      * and location. The list can use the Reference Object to link to parameters that
      * are defined at the OpenAPI Object's components/parameters.
+     *
+     * @var Parameter[]
      */
     protected array $parameters;
     /**
@@ -76,12 +84,16 @@ class Operation implements Model
      * security optional, an empty security requirement ({}) can be included in the array.
      * This definition overrides any declared top-level security. To remove a top-level
      * security declaration, an empty array can be used.
+     *
+     * @var SecurityRequirement[]
      */
     protected array $security;
     /**
      * An alternative server array to service this operation. If an alternative
      * server object is specified at the Path Item Object or Root level,
      * it will be overridden by this value.
+     *
+     * @var Server[]
      */
     protected array $servers;
 
@@ -93,12 +105,12 @@ class Operation implements Model
      * @param  string|null  $operation_id
      * @param  bool  $deprecated
      * @param  ExternalDocumentation|null  $external_docs
-     * @param  array  $parameters
+     * @param  Parameter[]  $parameters
      * @param  Reference|RequestBody|null  $request_body
      * @param  Response[]  $responses
      * @param  array  $callbacks
-     * @param  array  $security
-     * @param  array  $servers
+     * @param  SecurityRequirement[]  $security
+     * @param  Server[]  $servers
      */
     public function __construct(
         array $tags,
@@ -128,12 +140,27 @@ class Operation implements Model
         $this->servers = $servers;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
-        $responses = $data['responses'] ?? [];
+        $responses = $data['responses'];
+        $parameters = $data['parameters'] ?? [];
+        $security = $data['security'] ?? [];
+        $servers = $data['servers'] ?? [];
 
         foreach ($responses as &$response) {
             $response = Response::fromArray($response);
+        }
+
+        foreach ($parameters as &$parameter) {
+            $parameter = Parameter::fromArray($parameter);
+        }
+
+        foreach ($security as &$security_requirement) {
+            $security_requirement = SecurityRequirement::fromArray($security_requirement);
+        }
+
+        foreach ($servers as &$server) {
+            $server = Server::fromArray($server);
         }
 
         return new self(
@@ -143,12 +170,108 @@ class Operation implements Model
             $data['operationId'] ?? null,
             $data['deprecated'] ?? false,
             isset($data['externalDocs']) ? ExternalDocumentation::fromArray($data['externalDocs']) : null,
-            $data['parameters'] ?? [],
+            $parameters,
             isset($data['requestBody']) ? RequestBody::fromArray($data['requestBody']) : null,
             $responses,
             $data['callbacks'] ?? [],
-            $data['security'] ?? [],
-            $data['servers'] ?? [],
+            $security,
+            $servers,
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOperationId(): ?string
+    {
+        return $this->operation_id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeprecated(): bool
+    {
+        return $this->deprecated;
+    }
+
+    /**
+     * @return ExternalDocumentation|null
+     */
+    public function getExternalDocs(): ?ExternalDocumentation
+    {
+        return $this->external_docs;
+    }
+
+    /**
+     * @return Parameter[]
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @return Reference|RequestBody|null
+     */
+    public function getRequestBody()
+    {
+        return $this->request_body;
+    }
+
+    /**
+     * @return Response[]
+     */
+    public function getResponses(): array
+    {
+        return $this->responses;
+    }
+
+    /**
+     * @return Callback[]
+     */
+    public function getCallbacks(): array
+    {
+        return $this->callbacks;
+    }
+
+    /**
+     * @return SecurityRequirement[]
+     */
+    public function getSecurity(): array
+    {
+        return $this->security;
+    }
+
+    /**
+     * @return Server[]
+     */
+    public function getServers(): array
+    {
+        return $this->servers;
     }
 }

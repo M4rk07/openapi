@@ -62,7 +62,7 @@ class OpenAPI extends AbstractModel
     /**
      * Additional external documentation.
      */
-    protected ?ExternalDocumentation $external_doc;
+    protected ?ExternalDocumentation $external_docs;
 
     /**
      * OpenAPI constructor.
@@ -83,7 +83,7 @@ class OpenAPI extends AbstractModel
         array $components,
         array $security,
         array $tags,
-        ?ExternalDocumentation $external_doc
+        ?ExternalDocumentation $external_docs
     ) {
         $this->openapi = $openapi;
         $this->info = $info;
@@ -92,7 +92,7 @@ class OpenAPI extends AbstractModel
         $this->components = $components;
         $this->security = $security;
         $this->tags = $tags;
-        $this->external_doc = $external_doc;
+        $this->external_docs = $external_docs;
     }
 
     protected static function constructFromArray(array $data): self
@@ -128,7 +128,7 @@ class OpenAPI extends AbstractModel
             $data['components'] ?? [],
             $security,
             $tags,
-            isset($data['externalDoc']) ? ExternalDocumentation::fromArray($data['externalDoc']) : null
+            isset($data['externalDocs']) ? ExternalDocumentation::fromArray($data['externalDocs']) : null
         );
     }
 
@@ -191,8 +191,8 @@ class OpenAPI extends AbstractModel
     /**
      * @return ExternalDocumentation|null
      */
-    public function getExternalDoc(): ?ExternalDocumentation
+    public function getExternalDocs(): ?ExternalDocumentation
     {
-        return $this->external_doc;
+        return $this->external_docs;
     }
 }

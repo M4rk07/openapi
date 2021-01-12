@@ -2,7 +2,7 @@
 
 namespace Restz\OpenAPI\Models;
 
-class SecurityRequirement implements Model
+class SecurityRequirement extends AbstractModel
 {
     /**
      * Each name MUST correspond to a security scheme which is declared in the
@@ -24,10 +24,18 @@ class SecurityRequirement implements Model
         $this->requirements = $requirements;
     }
 
-    public static function fromArray(array $data): self
+    protected static function constructFromArray(array $data): self
     {
         return new self(
             $data['requirements'] ?? []
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRequirements(): array
+    {
+        return $this->requirements;
     }
 }
