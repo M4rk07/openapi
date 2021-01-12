@@ -86,7 +86,7 @@ class Schema extends AbstractModel
             $data['writeOnly'] ?? false,
             $data['deprecated'] ?? false,
             isset($data['discriminator']) ? Discriminator::fromArray($data['discriminator']) : null,
-            isset($data['externalDoc']) ? ExternalDocumentation::fromArray($data['externalDoc']) : null,
+            isset($data['externalDocs']) ? ExternalDocumentation::fromArray($data['externalDocs']) : null,
             $data['example'] ?? []
         );
     }
